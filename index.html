@@ -355,6 +355,17 @@
   // prevent page moves while touching anywhere during play (safety)
   document.addEventListener('touchmove', e => { if(!awaitingStart && !overlay.classList.contains('show')) e.preventDefault(); }, {passive:false});
   document.addEventListener('touchstart', e => { if(!awaitingStart && !overlay.classList.contains('show')) e.preventDefault(); }, {passive:false});
+// --- stop the page from scrolling with arrows/space while playing ---
+function isPlaying(){
+  return !awaitingStart && !overlay.classList.contains('show');
+}
+const SCROLL_KEYS = new Set(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space',' ']);
+document.addEventListener('keydown', (e) => {
+  const code = e.code || e.key;
+  if (SCROLL_KEYS.has(code) && isPlaying()) {
+    e.preventDefault(); // stop page scroll
+  }
+}, { capture: true, passive: false });
 
   muteToggle.addEventListener('change', ()=>{ isMuted = muteToggle.checked; if(!isMuted) ensureAudio(); });
   document.getElementById('btnClear').addEventListener('click', ()=>{ saveScores([]); renderScores(); });
