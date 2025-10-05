@@ -283,6 +283,14 @@
     // brief spawn shield at game start on touch
     if(IS_TOUCH) ship.invUntil = time + 0.4;
   }
+function startGame(){
+  try{
+    awaitingStart=false; paused=false; startOverlay.classList.remove('show'); ensureAudio(); reset();
+    cvs.focus && cvs.focus(); // <-- add this
+    if(mLabels) mLabels.style.display='none';
+    if(mFireLabel) mFireLabel.style.display='none';
+  } catch(err) { /* ... */ }
+}
 
   function spawnWave(){
     const n = 4 + (wave-1);
